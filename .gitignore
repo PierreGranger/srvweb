@@ -1,0 +1,7 @@
+.env
+/data/srv/var/log/apache2/*
+/data/var/lib/*
+/data/var/log/apache2/*
+/data/home/*/www/*
+/data/home/*/logs/*
+/data/home/*/symfony/*

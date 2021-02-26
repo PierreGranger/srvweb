@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+  web: 
+    build: ./docker/web
+    container_name: web
+    ports:
+        - 80:80
+        - 443:443
+    volumes:
+      - ${PWD}/data/home/apidae-event/www:/home/apidae-event/www
+      - ${PWD}/data/home/apidae-event/logs:/home/apidae-event/logs
+      - ${PWD}/docker/web/apidae-event.conf:/etc/apache2/sites-enabled/apidae-event.conf
+      
+      - ${PWD}/data/home/git/www:/home/git/www
+      - ${PWD}/data/home/git/logs:/home/git/logs
+      - ${PWD}/docker/web/git.conf:/etc/apache2/sites-enabled/git.conf
+      
+      - ${PWD}/data/home/md/www:/home/md/www
+      - ${PWD}/data/home/md/logs:/home/md/logs
+      - ${PWD}/docker/web/md.conf:/etc/apache2/sites-enabled/md.conf
+
+      - ${PWD}/data/home/roadmap/symfony:/home/roadmap/symfony
+      - ${PWD}/data/home/roadmap/logs:/home/roadmap/logs
+      - ${PWD}/docker/web/roadmap.conf:/etc/apache2/sites-enabled/roadmap.conf
+
+      - ${PWD}/data/home/demo/symfony:/home/demo/symfony
+      - ${PWD}/data/home/demo/logs:/home/demo/logs
+      - ${PWD}/docker/web/demo.conf:/etc/apache2/sites-enabled/demo.conf
+
+      - ${PWD}/data/srv/var/log/apache2:/var/log/apache2
+
+      #- ${PWD}/docker/web/php.ini:/usr/local/etc/php/conf.d/90-custom.ini
+      - ${PWD}/docker/web/php.ini:/etc/php/7.4/apache2/conf.d/90-custom.ini
+
+    links:
+      - db:db
+    
+    restart: unless-stopped
+
+  db:
+    image: mysql:5
+    container_name: db
+    volumes:
+        - ${PWD}/data/var/lib/mysql:/var/lib/mysql
+    ports:
+        - "3306:3306"
+    environment:
+        - MYSQL_ROOT_PASSWORD=root
+    restart: unless-stopped
+
+  myadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: myadmin
+    ports:
+        - "81:80"
+    links:
+        - db:db
+    restart: unless-stopped
