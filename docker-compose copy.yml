@@ -7,8 +7,6 @@ services:
     ports:
         - 80:80
         - 443:443
-    depends_on:
-      - postgres
     volumes:
       - ./data/home/apidae-event/www:/home/apidae-event/www
       - ./data/home/apidae-event/logs:/home/apidae-event/logs
@@ -40,37 +38,4 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ./docker/web/ssl-params.conf:/etc/apache2/conf-available/ssl-params.conf
 
-    restart: unless-stopped
-
-  postgres:
-    image:  postgres:13.2
-    container_name: postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - ./data/var/lib/postgresql/data/:/var/lib/postgresql/data/
-    environment:
-      POSTGRES_PASSWORD: db_password
-      POSTGRES_USER: db_user
-      POSTGRES_DB: main
-    restart: unless-stopped
-
-  mysql:
-    image: mysql:5
-    container_name: mysql
-    volumes:
-        - ${PWD}/data/var/lib/mysql:/var/lib/mysql
-    ports:
-        - "3306:3306"
-    environment:
-        - MYSQL_ROOT_PASSWORD=root
-    restart: unless-stopped
-
-  myadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: myadmin
-    ports:
-        - "81:80"
-    links:
-        - mysql:mysql
     restart: unless-stopped

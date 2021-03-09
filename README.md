@@ -24,8 +24,11 @@ Pour chaque nouvel hébergement il faut :
     - Soit un domaine fictif, que vous pouvez configurer dans /etc/hosts sous linux
       - `${PWD}/docker/web/XXXX.conf` : `ServerName XXXX.apidae-tourisme.com`
       - /etc/hosts : `127.0.0.1	roadmap.apidae-tourisme.local`
+- Faire créer l'utilisateur à la distrib debian
+  - docker/web/Dockerfile
+    - `RUN useradd -ms /bin/bash admin`
       
- Une dois le container lancé (docker-compose up -d), vous pourrez accéder à tous les sous répertoires sur les différents noms :
+ Une fois le container lancé (docker-compose up -d), vous pourrez accéder à tous les sous répertoires sur les différents noms :
  roadmap.apidae-tourisme.local
  md.apidae-tourisme.local
  ...
